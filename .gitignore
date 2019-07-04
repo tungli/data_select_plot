@@ -1,0 +1,5 @@
+*.swp
+test/**
+*.png
+*.out
+__pycache__/**
