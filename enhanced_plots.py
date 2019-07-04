@@ -63,9 +63,13 @@ class Batch:
     def gimme_more(self):
         if self.current == len(self.data_list) - 1:
             print("No more data man!")
+            plt.close()
         else:
             self.current += 1
+            last_f = self._f # in ipython this is not needed, in script yes
             self._f = FigureWithBindings(self, self.data_list[self.current], preprocess_fun=self.preprocess_fun, postprocess_fun=self.postprocess_fun)
+            plt.show(block=True)
+            plt.close(last_f.fig)
 
     def take_my_data(self, data):
         self.data_list[self.current].annotation = data
@@ -161,7 +165,7 @@ class FigureWithBindings:
 
     def quit(self, event):
         my_data = self.post_fun(self.categorized_points)
-        plt.close()
+        plt.clf()
         self.creator.take_my_data(my_data)
         self.creator.gimme_more()
 
