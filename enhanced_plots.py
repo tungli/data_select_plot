@@ -24,7 +24,7 @@ There are 3 classes in play:
 4. Use the `FigureWithBindings` plot.
 
 FigureWithBindings is constructed from `Batch`.
-You might want to set these:j
+You might want to set these:
     - preprocessing function which controls what data is shown on the plot
     - postprocessing function which maps categorized data to data you actually
       want to save By default both functions are identity functions.  The
