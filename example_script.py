@@ -39,5 +39,5 @@ batch = Batch(data_list,
         preprocess_fun=prepare_img,
         postprocess_fun=gather_categories)
 
-batch.gimme_more()
+batch.next()
 

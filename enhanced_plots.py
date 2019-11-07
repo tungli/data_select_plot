@@ -1,5 +1,6 @@
-"""
-Extended matplotlib plots with keybindings to automate image processing.
+""" 
+Extended matplotlib plots with keybindings to help with manual image
+processing.
 
 Makes use of: 
 https://matplotlib.org/3.1.0/users/event_handling.html    
@@ -20,7 +21,7 @@ There are 3 classes in play:
 ----------------------- HOW TO USE -------------------------------
 1. Create a list of `DataUnit` classes.
 2. Construct `Batch`.
-3. Run `Batch.gimme_more()`.
+3. Run `Batch.next()`.
 4. Use the `FigureWithBindings` plot.
 
 FigureWithBindings is constructed from `Batch`.
@@ -60,7 +61,7 @@ class Batch:
         self.current = -1
         self._f = None
     
-    def gimme_more(self):
+    def next(self):
         if self.current == len(self.data_list) - 1:
             print("No more data man!")
             plt.close()
@@ -71,7 +72,7 @@ class Batch:
             plt.show(block=True)
             plt.close(last_f.fig)
 
-    def take_my_data(self, data):
+    def save_data(self, data):
         self.data_list[self.current].annotation = data
         self.save_progress()
         
@@ -83,11 +84,11 @@ class Batch:
 
 class FigureWithBindings:
     """
-    `FigureWithBindings(self, god, data, preprocess_fun postprocess_fun)`
+    `FigureWithBindings(self, parent, data, preprocess_fun postprocess_fun)`
 
     Parameters:
-    - `god`: the creator of the figure, needed to save dat
-    - `data`: data given by god
+    - `parent`: the creator of the figure, needed to save dat
+    - `data`: data given by parent
     - `preprocess_fun` - function applied on data before opening the plot
     - `postprocess_fun` - function applied on categorized data.
     Categorized data is a list of 3-tuples ('mode', x-coord, y-coord).
@@ -97,8 +98,8 @@ class FigureWithBindings:
     - remove last point: right-click
     - quit and go to next: press 'q'
     """
-    def __init__(self, god, data, preprocess_fun=lambda x: x, postprocess_fun=lambda x: x):
-        self.creator = god
+    def __init__(self, parent, data, preprocess_fun=lambda x: x, postprocess_fun=lambda x: x):
+        self.creator = parent
         self.post_fun = postprocess_fun
         self.fig, self.ax = plt.subplots()
         data_to_show = preprocess_fun(data.data)
@@ -166,8 +167,8 @@ class FigureWithBindings:
     def quit(self, event):
         my_data = self.post_fun(self.categorized_points)
         plt.clf()
-        self.creator.take_my_data(my_data)
-        self.creator.gimme_more()
+        self.creator.save_data(my_data)
+        self.creator.next()
 
     def redraw(self):
         self.fig.canvas.draw()
