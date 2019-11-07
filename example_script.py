@@ -1,7 +1,7 @@
 """
 Look inside `enhanced_plots.py` for more info.
 """
-from enhanced_plots import DataUnit, FigureWithBindings, Batch
+from data_select_plot import DataUnit, FigureWithBindings, Batch
 import numpy as np
 
 
